@@ -1,0 +1,54 @@
+name: radioline_map
+channels:
+  - anaconda
+  - defaults
+dependencies:
+  - pip=18.1=py37_0
+  - python=3.7.1=he44a216_5
+  - setuptools=40.6.2=py37_0
+  - vc=14.1=h21ff451_3
+  - vs2015_runtime=15.5.2=3
+  - wheel=0.32.3=py37_0
+  - wincertstore=0.2=py37_0
+  - blas=1.0=mkl
+  - ca-certificates=2018.03.07=0
+  - certifi=2018.11.29=py37_0
+  - cycler=0.10.0=py37_0
+  - freetype=2.9.1=ha9979f8_1
+  - icc_rt=2019.0.0=h0cc432a_1
+  - icu=58.2=h3fcc66b_1
+  - intel-openmp=2019.1=144
+  - jpeg=9b=he27b436_2
+  - kiwisolver=1.0.1=py37h6538335_0
+  - libpng=1.6.35=h2a8f88b_0
+  - mkl=2019.1=144
+  - openssl=1.1.1a=he774522_0
+  - pyparsing=2.3.0=py37_0
+  - pyqt=5.9.2=py37h6538335_0
+  - pyserial=3.4=py37_0
+  - python-dateutil=2.7.5=py37_0
+  - pytz=2018.7=py37_0
+  - qt=5.9.7=vc14h73c81de_0
+  - sip=4.19.8=py37h6538335_0
+  - six=1.12.0=py37_0
+  - sqlite=3.26.0=he774522_0
+  - tornado=5.1.1=py37hfa6e2cd_0
+  - zlib=1.2.11=h62dcd97_3
+  - pip:
+    - altgraph==0.16.1
+    - branca==0.3.1
+    - chardet==3.0.4
+    - folium==0.7.0
+    - future==0.17.1
+    - idna==2.8
+    - jinja2==2.10
+    - macholib==1.11
+    - markupsafe==1.1.0
+    - numpy==1.15.4
+    - pefile==2018.8.8
+    - pyinstaller==3.4
+    - pywin32-ctypes==0.2.0
+    - requests==2.21.0
+    - urllib3==1.24.1
+prefix: C:\Anaconda3\envs\radioline_map
+
