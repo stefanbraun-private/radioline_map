@@ -80,6 +80,9 @@ Zum Start der Programmierung alle Python-Packages im aktuellen Environment auf d
 -"Pycharm" -> "Settings" -> "Project: radioline_map" -> "Interpreter"
   (für Veröffentlichung benötigt)
   -> Package "PyInstaller" in Pycharm via PyPI installieren (grünes "Conda"-Icon NICHT aktiv, dann "+")
+  ===>NEIN! wegen Inkompatibilität mit "jinja2": Installation von "py2exe" mittels pip
+  ===>NEIN! leider ist py2exe nicht mit Python 3.6 kompatibel... :-(
+  =>Versuch mit "Cx_Freeze", siehe weiter unten...
 
   (für Entwicklung benötigt)
   -> Package "pyserial" via Conda installieren (grünes "Conda"-Icon aktiv, dann "+")
@@ -134,7 +137,7 @@ in PyCharm:
 ->VCS ->Git ->Push... (dies lädt die letzten Änderungen auf GitHub)
 
 
-==>>FIXME: aktuell laufen die erzeugten EXE-Dateien leider nicht... :-( Folglich noch kein Binär-Release möglich... :-(
+==>>FIXME: Freezing der Python-Umgebung in EXE-Dateien klappte nach Stunden nur mit "cx_Freeze", siehe weiter unten... Ist auch elegantere Lösung möglich?
 Windows EXE-Datei erstellen :
 =>siehe Anleitung unter
 https://pyinstaller.readthedocs.io/en/stable/operating-mode.html#bundling-to-one-file
@@ -159,6 +162,66 @@ das Zusammenschnüren zu einem EXE-File birgt verschiedene Risiken...
 z.B. nicht aufgelöste Abhängigkeiten,
 oder z.B. falsches Encoding beim Textdatei-Handling im Konsolenprogramm, etc.
 http://python-notes.curiousefficiency.org/en/latest/python3/text_file_processing.html
+
+
+~~~~~~~~~~~~~
+Versuch gemäss https://pythonhosted.org/PyInstaller/spec-files.html
+-"spec"-File generieren:
+ "pyi-makespec --onedir --console --name radioline_map_v0.0.1_x86 radioline_map\generate_map.py"
+-generiertes File editieren und gemäss https://pythonhosted.org/PyInstaller/spec-files.html#using-data-files-from-a-module
+ die Zeilen mit "added_files" hinzufügen
+-zudem noch Codeteil von https://stackoverflow.com/questions/35811448/pyinstaller-jinja2-templatenotfound einfügen,
+ da das Package "Jinja2" "pkg_resources" nutzt und PyInstaller dies momentan noch nicht unterstützt... :-/
+
+-PyInstaller ausführen:
+ "pyinstaller radioline_map_v0.0.1_x86.spec"
+
+==>"Übung halt, Übung abgebrochen..." Ich versuche nun "py2exe" anstelle "PyInstaller"
+
+TEST mit "py2exe":
+-"setup.py" erstellen
+-in "Anaconda Prompt" im Projektverzeichnis Folgendes ausführen:
+ "python setup.py py2exe"
+
+==>Leider klappt es nicht... Offenbar ist py2exe nicht kompatibel mit Python 3.6 :-(
+siehe Diskussion unter https://stackoverflow.com/questions/41578808/python-indexerror-tuple-index-out-of-range-when-using-py2exe
+
+
+TEST mit "cx_Freeze": ==>Versuch hat schlussendlich über mehrere Umwege geklappt!
+(basierend auf Beispiel https://stackoverflow.com/a/48271935 )
+=>"pip install cx_freeze" klappt erst, wenn die "Microsoft Visual C++ Build Tools" v14 oder neuer installiert werden!
+https://visualstudio.microsoft.com/visual-cpp-build-tools/
+==>pip sollte eigentlich nun "cx_freeze" mit dem C++ compiler kompilieren. Jedoch klappt es nicht, diverse Fehler... :-(
+
+Idee: Binärfile für Windows x86 / Python 3.7 installieren, leider fehlt dieses "wheel" auf Webseite:
+https://pypi.org/project/cx_Freeze/#files
+=>Alternative gemäss https://stackoverflow.com/questions/50686243/cant-install-cx-freeze-or-scipy-python-3-7-64-bit
+"pip install https://download.lfd.uci.edu/pythonlibs/r5uhg2lo/cx_Freeze-5.1.1-cp37-cp37m-win32.whl"
+ (und gleich die URL in "requirements.txt" einfügen!)
+
+diverse Infos von https://stackoverflow.com/questions/15486292/cx-freeze-doesnt-find-all-dependencies
+=>"setup.py" im Projektverzeichnis erstellen,
+  Beispiele gibt es hier: https://github.com/anthony-tuininga/cx_Freeze/tree/master/cx_Freeze/samples
+-"Anaconda Prompt" starten
+-conda Environment aktivieren: "activate radioline_map"
+-in Projektverzeichnis wechseln: "cd C:\Users\Asenta\PycharmProjects\radioline_map"
+-Freeze-Vorgang starten: "python setup.py build"
+ ==>in normalem Windows Command Prompt in Projektverzeichnis wechseln und "dist\radioline_map.exe" starten
+ ==>iterativ alle fehlenden Ressourcen in "setup.py" einfügen und Freeze-Vorgang erneut durchführen...
+ (sehr mühsame Sache... Trial and Error...)
+z.B. Nachinstallation via conda folgender Packages: "appdirs", "packaging"
+z.B. gemäss https://gist.github.com/hangtwenty/b9820fe204eebb0cc5b9aba49f3c8b22
+   "pip install --upgrade setuptools"
+
+=>wenn die EXE-Datei in "dist\" korrekt ausgeführt wird, dann die Files in ein ZIP packen,
+ auf zweitem Rechner ausprobieren und releasen! :-)
+
+~~~~~~~~~~~~~
+
+
+
+
+
 
 
 -vor Veröffentlichung:

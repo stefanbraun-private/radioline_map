@@ -43,11 +43,12 @@ simply "Open"->"File", then after editing "Save"->"GeoJSON"
    
 ## example   
 ```
---port COM3 --mapfile ..\test\map.geojson --htmlfile ..\test\map.html --zoom 9 --open_browser -v -v
+radioline_map.exe --port COM3 --mapfile ..\test\map.geojson --htmlfile ..\test\map.html --zoom 9 --open_browser -v -v
 ```   
-   =>subdirectory "test" contains files for the example above.   
-   [hint: locations in "map.geojson" are fictional, the modules-setup is currently under my desk... :-)]   
-
+   **=>subdirectory "test" on GitHub contains files for the example above.**   
+   [hint: locations in "map.geojson" are fictional, the modules-setup is currently under my desk... :-) ]   
+   [hint2: hmm, it seems that a HTML tag is missing in the generated file... otherwise I could you the interactive map under https://htmlpreview.github.io/?https://github.com/stefanbraun-private/radioline_map/blob/master/test/map.html ]   
+   
 Non-interactive Screenshot showing master module, network topology, RSSI-values, link quality and module metadata as popup and tooltip:   
 ![screenshot_radioline_map.png](https://stefanbraun-private.github.io/img/screenshot_radioline_map.png)
    
